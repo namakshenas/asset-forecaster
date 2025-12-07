@@ -23,10 +23,7 @@ jobs:
       - run: uv pip install --system neuralforecast yfinance scipy pydantic plotly kaleido
       
       - run: |
-          python update_btc.py
-          python update_eth.py
-          python update_gold.py
-          python update_silver.py
+          python update_pred.py
       
       - run: |
           git config user.name "github-actions[bot]"
