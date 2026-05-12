@@ -6,7 +6,7 @@ from scipy.ndimage import gaussian_filter1d
 
 logging.getLogger("pytorch_lightning").setLevel(logging.ERROR)
 
-assets = ["GOLD", "SILVER", "BTC", "ETH"]
+assets = ["GOLD", "SILVER", "BTC", "ETH", "BRENT"]
 # assets = ["GOLD"]
 horizon = 30
 start_date = "2018-01-01"
