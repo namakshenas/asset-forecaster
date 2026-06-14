@@ -1,6 +1,6 @@
-# Daily (monthly ahead) Neural Price Forecasting
+# Daily (one-month-ahead) Price Forecasting
 
-Daily automated Bitcoin, ETH, GOLD, SILVER, and BRENT price forecasts using deep neural networks. Updates daily at midnight UTC automatically.
+Daily automated Bitcoin, ETH, GOLD, SILVER, and BRENT price forecasts using deep neural networks plus a non-neural Polymarket-Implied forecast. Updates daily at midnight UTC automatically.
 
 Each chart shows **six forecasters**: the five neural models (TSMixer, NBEATS, NHITS, MLP, TiDE) plus a non-neural **Polymarket-Implied** forecast (dashed line), explained below.
 
