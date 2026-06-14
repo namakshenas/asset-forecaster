@@ -16,3 +16,7 @@ def get_models(horizon):
 
 def get_symbol():
     return "BTC-USD"
+
+
+def get_polymarket():
+    return {"query": "bitcoin", "match": ["bitcoin", "btc"]}

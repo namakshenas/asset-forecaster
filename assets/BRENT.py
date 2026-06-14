@@ -19,3 +19,9 @@ def get_models(horizon):
 
 def get_symbol():
     return "BZ=F"
+
+
+# Polymarket lists WTI, not Brent; the implied *return* from WTI markets is applied to
+# the Brent spot, so the small WTI/Brent basis washes out (we forecast relative moves).
+def get_polymarket():
+    return {"query": "oil price", "match": ["wti", "crude", "oil"]}

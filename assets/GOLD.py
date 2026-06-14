@@ -16,3 +16,7 @@ def get_models(horizon):
 
 def get_symbol():
     return "GC=F"
+
+
+def get_polymarket():
+    return {"query": "gold price", "match": ["gold", "xauusd"]}

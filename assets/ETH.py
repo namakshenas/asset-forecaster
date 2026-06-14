@@ -18,3 +18,7 @@ def get_models(horizon):
 
 def get_symbol():
     return "ETH-USD"
+
+
+def get_polymarket():
+    return {"query": "ethereum price", "match": ["ethereum", "eth"]}

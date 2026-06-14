@@ -19,3 +19,7 @@ def get_models(horizon):
 
 def get_symbol():
     return "SI=F"
+
+
+def get_polymarket():
+    return {"query": "silver price", "match": ["silver", "xagusd"]}
