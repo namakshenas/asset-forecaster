@@ -2,7 +2,17 @@
 
 Daily automated Bitcoin, ETH, GOLD, SILVER, and BRENT price forecasts using deep neural networks plus a non-neural Polymarket-Implied forecast and Google's TimesFM foundation model. Updates daily at midnight UTC automatically.
 
-Each chart shows **seven forecasters**: the five neural models (TSMixer, NBEATS, NHITS, MLP, TiDE), a non-neural **Polymarket-Implied** forecast (dashed line), and **Google TimesFM** (dotted line) — a pretrained zero-shot foundation model — both explained below.
+Each chart shows **seven forecasters**: the five neural models (TSMixer, NBEATS, NHITS, MLP, TiDE), a **Polymarket-Implied** forecast (dashed line), and **Google TimesFM** (dotted line) — a pretrained zero-shot foundation model — both explained below.
+
+## How the neural forecasters work
+
+The five neural models come from the [neuralforecast](https://github.com/Nixtla/neuralforecast) library. They are **trained from scratch on each run**: every model learns from roughly the last two years of that asset's own daily closing prices (a 504-day window, 252 for MLP) and predicts the next 30 days. Because each architecture sees the same history but models it differently, comparing their forecasts gives a sense of how much the outlook depends on the modelling assumptions rather than the data alone.
+
+- **TSMixer** — an all-MLP architecture that alternately "mixes" information along the time axis and across features. It captures temporal patterns without recurrence or attention, making it fast and surprisingly strong on structured series.
+- **NBEATS** — a deep stack of fully-connected blocks linked by backward/forward residuals. Here it's configured with interpretable **trend** and **seasonality** basis functions, so it decomposes the series into a smooth trend plus repeating cycles.
+- **NHITS** — an evolution of NBEATS that adds multi-rate pooling and hierarchical interpolation. By processing the series at several resolutions it handles long horizons efficiently and resists overfitting to short-term noise.
+- **MLP** — a plain multilayer perceptron that maps a window of past prices straight to the forecast. It's the simplest baseline here and a useful reference point for whether the fancier models are actually adding value.
+- **TiDE** — a Time-series Dense Encoder: an MLP-based encoder–decoder that compresses the input window into a dense representation before decoding the forecast. It pairs the speed of MLPs with the structure of an encoder–decoder.
 
 ## How the Polymarket forecast works
 
