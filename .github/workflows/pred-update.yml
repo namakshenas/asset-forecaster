@@ -17,11 +17,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
+
+      # Cache the TimesFM checkpoint so it downloads once, not on every daily run.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-timesfm-2.5-200m-pytorch
+
       - run: pip install uv
-      
-      - run: uv pip install --system neuralforecast yfinance scipy pydantic plotly kaleido
-      
+
+      - run: uv pip install --system neuralforecast yfinance scipy pydantic plotly kaleido "timesfm[torch]"
+
       - run: |
           python update_pred.py
       

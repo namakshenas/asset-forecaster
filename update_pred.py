@@ -5,6 +5,7 @@ import importlib
 from scipy.ndimage import gaussian_filter1d
 
 import polymarket as pm
+import timesfm_model as tfm
 
 logging.getLogger("pytorch_lightning").setLevel(logging.ERROR)
 
@@ -42,10 +43,15 @@ for asset in assets:
     pm_df = pm.forecast_path(df[["ds", "y"]], pm_events, horizon)
     Y_hat_df = Y_hat_df.merge(pm_df, on="ds", how="left")
 
+    # Add TimesFM zero-shot foundation-model forecast as another (non-neural) column.
+    print(f"Adding TimesFM forecast for {asset}...")
+    ts_df = tfm.forecast_path(df[["ds", "y"]], horizon)
+    Y_hat_df = Y_hat_df.merge(ts_df, on="ds", how="left")
+
     all_predictions[asset] = {
         'data': df,
         'predictions': Y_hat_df,
-        'models': [type(model).__name__ for model in models] + [pm.POINT_COL]
+        'models': [type(model).__name__ for model in models] + [pm.POINT_COL, tfm.POINT_COL]
     }
 
 if __name__ == "__main__":

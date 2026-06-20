@@ -1,7 +1,7 @@
 [project]
 name = "neural-asset-forecaster"
 version = "0.1.1"
-description = "Daily automated Bitcoin, ETH, GOLD, and SILVER price forecasts using neural networks. Updates daily at midnight UTC automatically."
+description = "Daily automated Bitcoin, ETH, GOLD, SILVER, and BRENT price forecasts using neural networks, a Polymarket-implied forecast, and Google's TimesFM foundation model. Updates daily at midnight UTC automatically."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
@@ -10,5 +10,6 @@ dependencies = [
     "plotly>=6.4.0",
     "pydantic>=2.12.4",
     "scipy>=1.16.3",
+    "timesfm[torch]>=2.0.1",
     "yfinance>=0.2.66",
 ]

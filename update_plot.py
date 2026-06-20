@@ -1,6 +1,7 @@
 import plotly.graph_objects as go
 
 from polymarket import POINT_COL
+from timesfm_model import POINT_COL as TIMESFM_COL
 
 
 def create_plots(all_predictions):
@@ -16,8 +17,13 @@ def create_plots(all_predictions):
                                 name="Actual", line=dict(color="black", width=3)))
 
         for model in models:
-            # Make the Polymarket forecaster stand out from the neural ensemble lines.
-            line = dict(width=3, dash="dash", color="#1f77b4") if model == POINT_COL else dict(width=2)
+            # Make the non-neural forecasters stand out from the neural ensemble lines.
+            if model == POINT_COL:
+                line = dict(width=3, dash="dash", color="#1f77b4")  # Polymarket-Implied
+            elif model == TIMESFM_COL:
+                line = dict(width=3, dash="dot", color="#d62728")  # TimesFM foundation model
+            else:
+                line = dict(width=2)
             fig.add_trace(go.Scatter(x=Y_hat_df["ds"], y=Y_hat_df[model],
                                     name=model, line=line))
 
