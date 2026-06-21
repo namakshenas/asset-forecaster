@@ -1,0 +1,44 @@
+name: Weekly Backtest
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # Mondays 02:00 UTC (offset from the daily prediction run)
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    # NOTE: backtest.py runs with RETRAIN_WEEKLY=True — it refits the full ensemble at every
+    # weekly cutoff (~260 fits / ~1,300 model trainings across the 5 assets), which is expected
+    # to exceed GitHub's 6h hosted-runner cap. This scheduled job may therefore be killed before
+    # it commits results. To make it reliable: run on a self-hosted / larger runner (change
+    # `runs-on` below), or set RETRAIN_WEEKLY=False in backtest.py for the fast train-once mode.
+    timeout-minutes: 360
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Cache the TimesFM checkpoint so it downloads once, not on every run.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-timesfm-2.5-200m-pytorch
+
+      - run: pip install uv
+
+      - run: uv pip install --system neuralforecast yfinance scipy "timesfm[torch]"
+
+      - run: python backtest.py
+
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "[BACKTEST] Weekly backtest results"
+          git push
